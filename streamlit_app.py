@@ -20,7 +20,6 @@ st.dataframe(df_ventas)
 # Info básica
 st.subheader("🔍 Información del DataFrame")
 buffer = []
-st.subheader("🔍 Información del DataFrame")
 
 buffer = io.StringIO()
 df_ventas.info(buf=buffer)
@@ -43,6 +42,8 @@ st.pyplot(fig)
 st.subheader("🧠 Modelo de Regresión Logística")
 
 dias_festivos = df_ventas.drop(['Promociones', 'Ventas'], axis=1)
+# Convertir columnas categóricas a variables dummy
+dias_festivos = pd.get_dummies(dias_festivos)
 
 X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
     dias_festivos, df_ventas['Ventas'], train_size=0.9, random_state=42
