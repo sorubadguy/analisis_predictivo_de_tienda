@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+import io
 
 # Configuración de página
 st.set_page_config(page_title="Análisis de Ventas", layout="centered")
@@ -19,7 +20,11 @@ st.dataframe(df_ventas)
 # Info básica
 st.subheader("🔍 Información del DataFrame")
 buffer = []
-df_ventas.info(buf=buffer := [])
+st.subheader("🔍 Información del DataFrame")
+
+buffer = io.StringIO()
+df_ventas.info(buf=buffer)
+st.text(buffer.getvalue())
 st.text("".join(buffer))
 
 st.subheader("📈 Estadísticas descriptivas")
