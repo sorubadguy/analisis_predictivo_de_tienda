@@ -39,33 +39,42 @@ ax.set_ylabel('Cantidad de ventas')
 st.pyplot(fig)
 
 # Modelado
-st.subheader("🧠 Modelo de Regresión Logística")
+st.subheader("🧠 Modelo de Regresión Lineal")
 
 dias_festivos = df_ventas.drop(['Promociones', 'Ventas'], axis=1)
-# Convertir columnas categóricas a variables dummy
 dias_festivos = pd.get_dummies(dias_festivos)
 
 X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
     dias_festivos, df_ventas['Ventas'], train_size=0.9, random_state=42
 )
 
-modelo = LogisticRegression()
+modelo = LinearRegression()
 modelo.fit(X_entrena, y_entrena)
 
 # Evaluación
 score = modelo.score(X_prueba, y_prueba)
 
-st.subheader("🎯 Precisión del modelo")
-st.metric(label="Exactitud del modelo (R²)", value=f"{score:.2f}")
+st.subheader("🎯 R² del modelo (ajuste)")
+st.metric(label="Coeficiente de determinación", value=f"{score:.2f}")
 
-st.write("Puntaje del modelo:", score)
+# Predicciones
 st.subheader("🔮 Predicciones")
 y_pred = modelo.predict(X_prueba)
+
 resultados = pd.DataFrame({
     'Real': y_prueba.values,
-    'Predicción': y_pred
+    'Predicción': y_pred.round(2)
 })
 st.dataframe(resultados.head())
+
+st.subheader("📊 Gráfico: Real vs Predicción")
+fig2, ax2 = plt.subplots()
+ax2.scatter(y_prueba, y_pred, alpha=0.6)
+ax2.plot([y_prueba.min(), y_prueba.max()], [y_prueba.min(), y_prueba.max()], 'r--')
+ax2.set_xlabel("Valores reales")
+ax2.set_ylabel("Predicciones")
+ax2.set_title("Comparación entre ventas reales y predichas")
+st.pyplot(fig2)
 
 st.write("Valores únicos en 'Ventas':", df_ventas['Ventas'].nunique())
 st.write("Ejemplos de valores:", df_ventas['Ventas'].unique()[:10])
