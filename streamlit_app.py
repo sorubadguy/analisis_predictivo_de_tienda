@@ -52,7 +52,17 @@ X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
 modelo = LogisticRegression()
 modelo.fit(X_entrena, y_entrena)
 
-# Métrica
+# Evaluación
 score = modelo.score(X_prueba, y_prueba)
-st.metric(label="Precisión del modelo", value=f"{score:.2f}")
 
+st.subheader("🎯 Precisión del modelo")
+st.metric(label="Exactitud del modelo (R²)", value=f"{score:.2f}")
+
+st.write("Puntaje del modelo:", score)
+st.subheader("🔮 Predicciones")
+y_pred = modelo.predict(X_prueba)
+resultados = pd.DataFrame({
+    'Real': y_prueba.values,
+    'Predicción': y_pred
+})
+st.dataframe(resultados.head())
