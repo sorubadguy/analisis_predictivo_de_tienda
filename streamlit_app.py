@@ -19,17 +19,14 @@ st.dataframe(df_ventas)
 
 # Info básica
 st.subheader("🔍 Información del DataFrame")
-buffer = []
-
 buffer = io.StringIO()
 df_ventas.info(buf=buffer)
 st.text(buffer.getvalue())
-st.text("".join(buffer))
 
 st.subheader("📈 Estadísticas descriptivas")
 st.dataframe(df_ventas.describe())
 
-# Gráfico
+# Gráfico de dispersión
 st.subheader("📅 Ventas por Día de la Semana")
 fig, ax = plt.subplots()
 ax.scatter(df_ventas['DíaDeLaSemana'], df_ventas['Ventas'])
@@ -41,6 +38,7 @@ st.pyplot(fig)
 # Modelado
 st.subheader("🧠 Modelo de Regresión Lineal")
 
+# Preparar datos
 dias_festivos = df_ventas.drop(['Promociones', 'Ventas'], axis=1)
 dias_festivos = pd.get_dummies(dias_festivos)
 
@@ -51,7 +49,7 @@ X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
 modelo = LinearRegression()
 modelo.fit(X_entrena, y_entrena)
 
-# Evaluación
+# Evaluación del modelo
 score = modelo.score(X_prueba, y_prueba)
 
 st.subheader("🎯 R² del modelo (ajuste)")
@@ -67,11 +65,12 @@ resultados = pd.DataFrame({
 })
 st.dataframe(resultados.head())
 
-st.subheader("📊 Gráfico: Real vs Predicción")
+# Gráfico real vs predicción
+st.subheader("📊 Comparación: Valores Reales vs Predichos")
 fig2, ax2 = plt.subplots()
 ax2.scatter(y_prueba, y_pred, alpha=0.6)
 ax2.plot([y_prueba.min(), y_prueba.max()], [y_prueba.min(), y_prueba.max()], 'r--')
-ax2.set_xlabel("Valores reales")
-ax2.set_ylabel("Predicciones")
-ax2.set_title("Comparación entre ventas reales y predichas")
+ax2.set_xlabel("Ventas reales")
+ax2.set_ylabel("Ventas predichas")
+ax2.set_title("Ventas: Real vs Predicho")
 st.pyplot(fig2)
