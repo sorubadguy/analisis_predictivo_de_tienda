@@ -75,6 +75,3 @@ ax2.set_xlabel("Valores reales")
 ax2.set_ylabel("Predicciones")
 ax2.set_title("Comparación entre ventas reales y predichas")
 st.pyplot(fig2)
-
-st.write("Valores únicos en 'Ventas':", df_ventas['Ventas'].nunique())
-st.write("Ejemplos de valores:", df_ventas['Ventas'].unique()[:10])
