@@ -66,3 +66,6 @@ resultados = pd.DataFrame({
     'Predicción': y_pred
 })
 st.dataframe(resultados.head())
+
+st.write("Valores únicos en 'Ventas':", df_ventas['Ventas'].nunique())
+st.write("Ejemplos de valores:", df_ventas['Ventas'].unique()[:10])
